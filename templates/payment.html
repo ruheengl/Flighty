@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Flighty: Ticket Booked!</title>
+</head>
+<body>
+    <div class="page-header">
+        <center><h1>Flight_name</h1></center>
+        <center><p>Flying made easy</p></center>
+    </div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Home</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+    </nav>
+    <div class="alert alert-success mt-3 mx-auto w-75" role="alert">
+        Ticket confirmation successful!
+    </div>
+
+    <div class="jumbotron mx-auto w-75 py-5">
+        <h3>Ticket details:</h3>
+        <hr>
+        <div class="row my-4">
+            <div class="border-right border-dark col">
+                <span class="badge badge-secondary">ticket no.</span>
+                <span class="small">1818181</span>
+                <br><br>
+                <span class="badge badge-secondary">Passenger Name:</span>
+                <span class="small">John Doe</span>
+                <br><br>
+                <span class="badge badge-info">From:</span>
+                <span>Source</span>
+            </div>
+            <div class="w-50 col">
+                <span class="badge badge-secondary">Flight no.</span>
+                <span class="small">ABC123</span>
+                <br><br>
+                <span class="badge badge-secondary">Seat No.</span>
+                <span class="small">11A</span>
+                <br><br>
+                <span class="badge badge-info">To:</span>
+                <span>Destination</span>
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-primary float-right" onclick="printExt()">Print</button>
+    </div>
+    
+    <script>
+        let printExt = () => {
+            let printWindow = window.open('/print')
+            printWindow.addEventListener('load', () => {
+                if (Boolean(printWindow.chrome)) {
+                    printWindow.print();
+                    setTimeout(function(){
+                        printWindow.close();
+                    }, 500);
+                } else {
+                    printWindow.print();
+                    printWindow.close();
+                }
+            }, true);
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>
