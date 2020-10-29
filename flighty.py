@@ -40,6 +40,7 @@ def login():
         if error is None:
             session.clear()
             session['pno'] = user[2]
+            session['uname'] = user[0]
             return redirect(url_for('bookticket'))
 
         flash(error)
@@ -85,31 +86,82 @@ def signup():
         flash(error)
     return render_template('signup.html', error = error)
 
+@app.route("/logout", methods = ['GET'])
+def logout():
+    session.clear()
+    return redirect(url_for('login'))
+
 @app.route("/bookticket", methods=['GET', 'POST'])
 def bookticket():
     if request.method == 'GET':
         return render_template('app.html')
     else:
-        _src = request.form['inputsrc']
-        _dst = request.form['inputdest']
-        # cursor.execute(
-        #     "INSERT INTO users VALUES ('{}', '{}')".format(_src, _dst)
-        # )
-        # res = cursor.fetchall()
-        # conn.commit()
-        cursor.execute(
-            "SELECT * FROM flight WHERE source = '{}' and destination = '{}'".format(_src, _dst)
-        )
-        flights = cursor.fetchall()
-        return render_template('app.html', flights = flights)
+        if request.form['submit_button'] == 'select_srcdest':
+            _src = request.form['inputsrc']
+            _dst = request.form['inputdest']
+            cursor.execute(
+                "SELECT * FROM flight WHERE source = '{}' and destination = '{}'".format(_src, _dst)
+            )
+            flights = cursor.fetchall()
+            return render_template('app.html', flights = flights)
+        else:
+            fno = request.form['submit_button']
+            return redirect(url_for('payment', flight = fno))
 
 
 @app.route("/payment", methods=['GET', 'POST'])
 def payment():
-    if request.method == 'GET':
-        return render_template('payment.html')
-    elif request.method == 'POST':
-        pass
+    if request.method == 'GET' and not request.args.get('flight'):
+        return redirect(url_for('bookticket'))
+    elif request.args['flight']:
+        flight_no = request.args['flight']
+        username = session['uname']
+        ticket_id = 'ticket1'
+        price = 100
+        status = 'yes'
+
+        cursor.execute(
+            "INSERT INTO ticket VALUES ('{}', '{}', '{}', '{}', '{}')".format(
+                ticket_id,
+                username,
+                flight_no,
+                status,
+                price
+            )
+        )
+        ins = cursor.fetchall()
+        conn.commit()
+
+        cursor.execute(
+            "INSERT INTO booking VALUES ('{}', '{}')".format(ticket_id, flight_no)
+        )
+        ins = cursor.fetchall()
+        conn.commit()
+
+        # cursor.execute(
+        #     """UPDATE TABLE flight SET count_ticket = count_ticket - 1 WHERE
+        #      flight_id = '{}'""".format(flight_no)
+        # )
+        # update = cursor.fetchall()
+        # conn.commit()
+
+        cursor.execute(
+            "INSERT INTO userMakesPayment VALUES ('{}', '{}')".format(username, ticket_id)
+        )
+        ins = cursor.fetchall()
+        conn.commit()
+        
+        cursor.execute(
+            """SELECT ticket_id, booking.flight_id, source, destination, first_name, last_name
+                FROM booking, flight, users WHERE 
+                ticket_id = '{}' AND
+                booking.flight_id = flight.flight_id AND 
+                users.uname = '{}'""".format(ticket_id, session['uname'])
+        )
+        payment = cursor.fetchone()
+        return render_template('payment.html', payment = payment)
+
+        
 
 @app.route("/print", methods=['GET', 'POST'])
 def print():
@@ -124,37 +176,6 @@ def print():
 #         return redirect(url_for('login'))
 #     else:
 #         return redirect(url_for('bookticket'))
-
-# route for login page
-# @app.route('/login', methods=["GET","POST"])
-# def login_page():
-#     error = ''
-#     try:
-#         c, conn = connection()
-#         if request.method == "POST":
-
-#             data = c.execute("SELECT * FROM users WHERE username = (%s)", thwart(request.form['username']))
-            
-#             data = c.fetchone()[2]
-
-#             if sha256_crypt.verify(request.form['password'], data):
-#                 session['logged_in'] = True
-#                 session['username'] = request.form['username']
-
-#                 flash("You are now logged in")
-#                 return redirect(url_for("dashboard"))
-
-#             else:
-#                 error = "Invalid credentials, try again."
-
-#         gc.collect()
-
-#     return render_template("login.html", error=error)
-
-#     except Exception as e:
-#         #flash(e)
-#         error = "Invalid credentials, try again."
-#         return render_template("login.html", error = error)
 
 
 if __name__ == "__main__":

@@ -12,7 +12,7 @@
         <center><p>Flying made easy</p></center>
     </div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Home</a>
+        <a class="navbar-brand" href="{{ url_for('bookticket') }}">Home</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -27,23 +27,23 @@
         <div class="row my-4">
             <div class="border-right border-dark col">
                 <span class="badge badge-secondary">ticket no.</span>
-                <span class="small">1818181</span>
+                <span class="small">{{ payment[0] }}</span>
                 <br><br>
                 <span class="badge badge-secondary">Passenger Name:</span>
-                <span class="small">John Doe</span>
+                <span class="small">{{ payment[4] }} {{ payment[5] }}</span>
                 <br><br>
                 <span class="badge badge-info">From:</span>
-                <span>Source</span>
+                <span>{{ payment[2] }}</span>
             </div>
             <div class="w-50 col">
                 <span class="badge badge-secondary">Flight no.</span>
-                <span class="small">ABC123</span>
+                <span class="small">{{ payment[1] }}</span>
                 <br><br>
                 <span class="badge badge-secondary">Seat No.</span>
                 <span class="small">11A</span>
                 <br><br>
                 <span class="badge badge-info">To:</span>
-                <span>Destination</span>
+                <span>{{ payment[3] }}</span>
             </div>
         </div>
 
