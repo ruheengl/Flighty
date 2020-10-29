@@ -28,7 +28,7 @@
         </div>
     </nav>
     <div class="d-flex justify-content-center pt-5 pb-5">
-    <form>
+    <form method="post">
         <!-- <div class="form-row">
           <div class="form-group col-md-6">
             <label for="inputEmail4">Email</label>
@@ -37,7 +37,7 @@
         </div> -->
         <div class="form-group">
             <label for="inputsrc">Flight From:</label>
-            <select id="inputsrc" class="form-control">
+            <select id="inputsrc" class="form-control" name="inputsrc">
                 <option selected>Choose...</option>
                 <option value="Chandigarh">Chandigarh, Chandigarh, India</option>
                 <option value="Delhi">Delhi, Delhi, India</option>
@@ -54,7 +54,7 @@
         </div>
         <div class="form-group">
             <label for="inputdest">Flight To:</label>
-            <select id="inputdest" class="form-control">
+            <select id="inputdest" class="form-control" name="inputdest">
                 <option selected>Choose...</option>
                 <option value="Chandigarh">Chandigarh, Chandigarh, India</option>
                 <option value="Delhi">Delhi, Delhi, India</option>
@@ -71,34 +71,30 @@
         </div>
         <hr>
         <button type="submit" class="btn btn-primary">Check available Flights</button>
-        <div class="card mt-3">
-            <div class="card-body">
-              Ticket details
-              <br>
-              <!--using flask-->
-              <small>Source name</small>
-              <span class="badge badge-success">SRC</span>
-              <hr>
-              <small>Destination name</small>
-              <span class="badge badge-info">DST</span>
-              <button type="button" class="btn btn-primary float-right">Book Ticket</button><!--using flask-->
-            </div>
-        </div>
-        <div class="card mt-3">
-            <div class="card-body">
-              Ticket details
-              <br>
-              <!--using flask-->
-              <small>Source name</small>
-              <span class="badge badge-success">SRC</span>
-              <hr>
-              <small>Destination name</small>
-              <span class="badge badge-info">DST</span>
-              <button type="button" class="btn btn-primary float-right">Book Ticket</button><!--using flask-->
-            </div>
-        </div>
-        <small id="bookDisc" class="form-text text-muted">Your passport number will be verified before proceeding to payment.</small>
       </form>
+      <div>
+      {% if flights %}
+        {% for flight in flights %}
+        <div class="card mt-3">
+          <div class="card-body">
+            Ticket
+            Ticket details : {{ flight['flight_id'] }}
+            <br>
+            <!--using flask-->
+            <small>{{ flight['source'] }} : {{ flight['departure'] }}</small>
+            <span class="badge badge-success">SRC</span>
+            <hr>
+            <small>{{ flight['destination'] }} : {{ flight['arrival'] }}</small>
+            <span class="badge badge-info">DST</span>
+            <button type="button" class="btn btn-primary float-right">Book Ticket</button><!--using flask-->
+          </div>
+        </div>
+        {% endfor %}
+      {% endif %}
+      </div>
+      <div>
+      <small id="bookDisc" class="form-text text-muted">Your passport number will be verified before proceeding to payment.</small>
+      </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
