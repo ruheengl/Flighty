@@ -16,6 +16,8 @@ conn = mysql.connect()
 if conn:
     cursor = conn.cursor()
 
+global i
+i = 2
 
 @app.route("/login",  methods=['GET', 'POST'])
 def login():
@@ -108,6 +110,90 @@ def bookticket():
             fno = request.form['submit_button']
             return redirect(url_for('payment', flight = fno))
 
+@app.route("/profile", methods=['GET', 'POST'])
+def profile():
+    if request.method == 'GET':
+        cursor.execute("SELECT * FROM users WHERE uname = '{}'".format(session['uname']))
+        res = cursor.fetchall()
+        return render_template('users_view.html', result=res, content_type='application/json')
+    else:
+        return redirect(url_for('update'))
+
+@app.route("/update", methods=['GET', 'POST'])
+def update():
+    # error = None
+    if request.method == 'POST':
+        _pno = request.form['input_pno']
+        _fname = request.form['input_fname']
+        _lname = request.form['input_lname']
+        _dob = request.form['input_dob']
+        _address = request.form['input_address']
+        _phone = request.form['input_phone']
+        # _uname = request.form['input_uname'] if not None
+        _passwd = request.form['input_password']
+        
+        # cursor.execute(
+        #     "SELECT * FROM users WHERE users.uname = '{}' or users.pno = '{}' or users.phone_no = '{}'".format(_uname, _pno, _phone)
+        # )
+        # if cursor.fetchone() is not None:
+        #     error = 'User is already registered'
+        
+        # if error is None:
+        if request.form.get('input_pno', None):
+            cursor.execute(
+            "UPDATE users SET pno='{}' where users.uname = '{}'".format(
+                _pno,
+                session['uname'],
+            )
+        )
+        if request.form.get('input_fname', None):
+            cursor.execute(
+            "UPDATE users SET first_name='{}' where users.uname = '{}'".format(
+                _fname,
+                session['uname'],
+            )
+        )
+        if request.form.get('input_lname', None):
+            cursor.execute(
+            "UPDATE users SET last_name='{}' where users.uname = '{}'".format(
+                _lname,
+                session['uname'],
+            )
+        )
+        if request.form.get('input_dob', None):
+            cursor.execute(
+            "UPDATE users SET DOB='{}' where users.uname = '{}'".format(
+                _dob,
+                session['uname'],
+            )
+        )
+        if request.form.get('input_address', None):
+            cursor.execute(
+            "UPDATE users SET address='{}' where users.uname = '{}'".format(
+                _address,
+                session['uname'],
+            )
+        )
+        if request.form.get('input_phone', None):
+            cursor.execute(
+            "UPDATE users SET phone_no='{}' where users.uname = '{}'".format(
+                _phone,
+                session['uname'],
+            )
+        )
+        if request.form.get('input_password', None):
+            cursor.execute(
+            "UPDATE users SET passwd='{}' where users.uname = '{}'".format(
+                generate_password_hash(_passwd),
+                session['uname'],
+            )
+        )
+        res = cursor.fetchall()
+        conn.commit()
+        return redirect (url_for('profile'))
+        
+        # flash(error)
+    return render_template('update.html')
 
 @app.route("/payment", methods=['GET', 'POST'])
 def payment():
@@ -116,7 +202,8 @@ def payment():
     elif request.args['flight']:
         flight_no = request.args['flight']
         username = session['uname']
-        ticket_id = 'ticket1'
+        ticket_id = 'ticket'+str(i)
+        i += 1
         price = 100
         status = 'yes'
 
