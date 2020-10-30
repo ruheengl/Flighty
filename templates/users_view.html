@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}User Profile{% endblock %}
+{% block signup_active %}active{% endblock %} 
+
+{% block content %}
+<div class="jumbotron justify-content-center mx-auto mt-5 signup" style="width: 400px;">
+    <form action="" method="post">
+        <table id="users" style="width:100%" class="table table-bordered">
+            {% if result %}
+            {% for row in result %}
+            <tr class="table-info">
+                <th scope="row">Username</th>
+                <td>{{ row[0]}}</td>
+            </tr>
+            <tr class="table-info">
+                <th scope="row">Passport No.</th>
+                <td>{{ row[2]}}</td>
+            </tr>
+            <tr class="table-info">
+                <th scope="row">First Name</th>
+                <td>{{ row[3]}}</td>
+            </tr>
+            <tr class="table-info">
+                <th scope="row">Last Name</th>
+                <td>{{ row[4]}}</td>
+            </tr>
+            <tr class="table-info">
+                <th scope="row">Date of Birth</th>
+                <td>{{ row[5]}}</td>
+            </tr>
+            <tr class="table-info">
+                <th scope="row">Phone No.</th>
+                <td>{{ row[6]}}</td>
+            </tr>
+            <tr class="table-info">
+                <th scope="row">Address</th>
+                <td>{{ row[7]}}</td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+        </table>
+        <button type="submit" class="btn btn-primary btn-block">Update</button>
+    </form>
+</div>
+{% endblock %}
