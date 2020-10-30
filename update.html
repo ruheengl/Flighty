@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}Update Profile{% endblock %}
+{% block signup_active %}active{% endblock %} 
+
+{% block content %}
+<div class="jumbotron justify-content-center mx-auto mt-5 signup" style="width: 400px;">
+  <form action="" method="post">
+      <div class="form-group">
+            
+            <label for="exampleInputPassport" class="mt-4">Passport Number</label>
+            <input type="text" name="input_pno" class="form-control" id="exampleInputPassport" placeholder="As Before">
+            
+            <label for="exampleInputFname" class="mt-4">First Name</label>
+            <input type="text" name="input_fname" class="form-control" id="exampleInputFName" placeholder="As Before">
+
+            <label for="exampleInputLname" class="mt-4">Last Name</label>
+            <input type="text" name="input_lname" class="form-control" id="exampleInputLName" placeholder="As Before">
+
+            <label for="exampleInputDOB" class="mt-4">Date of Birth</label>
+            <input type="date" name="input_dob" class="form-control" id="exampleInputDOB" placeholder="As Before">
+            
+            <label for="exampleInputAddress" class="mt-4">Current Address</label>
+            <input type="text" name="input_address" class="form-control" id="exampleInputAddress" placeholder="As Before">
+
+            <label for="exampleInputPhone" class="mt-4">Phone Number</label>
+            <input type="text" name="input_phone" class="form-control" id="exampleInputPhone" placeholder="As Before" maxlength="10">
+
+            <!-- <label for="exampleInputUsername1">Username</label>
+            <input type="text" name="input_uname" class="form-control" id="exampleInputUsername1" aria-describedby="usernameHelp" placeholder="Enter username" required> -->
+
+            <label for="exampleInputPassword1" class="mt-4">Password</label>
+            <input type="password" name="input_password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+
+            <label for="exampleInputPassword2" class="mt-4">Confirm Password</label>
+            <input type="password" class="form-control" id="exampleInputPassword2" placeholder="Re-Enter Password">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Submit</button>
+    </form>
+</div>
+{% endblock %}
