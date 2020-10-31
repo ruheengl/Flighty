@@ -16,12 +16,12 @@ conn = mysql.connect()
 if conn:
     cursor = conn.cursor()
 
-global i
-i = 2
 
 @app.route("/login",  methods=['GET', 'POST'])
 def login():
     error = None
+    if request.args.get('user_reg'):
+        flash('User successfully created!')
     if request.method == 'POST':
         # if (request.form['input_uname'] != 'admin') or (request.form['input_passwd'] != 'admin'):
         #     error = 'Invalid Credentials. Please try again.'
@@ -61,12 +61,16 @@ def signup():
         _phone = request.form['input_phone']
         _uname = request.form['input_uname']
         _passwd = request.form['input_password']
+        _conf_pass = request.form['conf_password']
         
         cursor.execute(
             "SELECT * FROM users WHERE users.uname = '{}' or users.pno = '{}' or users.phone_no = '{}'".format(_uname, _pno, _phone)
         )
         if cursor.fetchone() is not None:
             error = 'User is already registered'
+
+        if _passwd != _conf_pass:
+            error = 'Password and Confirm password fields do not match'
         
         if error is None:
             cursor.execute(
@@ -83,7 +87,7 @@ def signup():
             )
             res = cursor.fetchall()
             conn.commit()
-            return redirect (url_for('login'))
+            return redirect (url_for('login', user_reg = True))
         
         flash(error)
     return render_template('signup.html', error = error)
@@ -102,12 +106,27 @@ def bookticket():
             _src = request.form['inputsrc']
             _dst = request.form['inputdest']
             cursor.execute(
-                "SELECT * FROM flight WHERE source = '{}' and destination = '{}'".format(_src, _dst)
+                "SELECT DISTINCT a1.location_code, a2.location_code FROM airport a1, airport a2 WHERE a1.city = '{}' and a2.city = '{}'".format(_src, _dst)
+            )
+            airports = cursor.fetchone()
+            cursor.execute(
+                """SELECT flight.*, airline_name FROM flight, airline
+                   WHERE source = '{}' and destination = '{}' AND
+                   airline_id = (
+                       SELECT DISTINCT flightScheduledForAirline.airline_id from flightScheduledForAirline
+                       WHERE flightScheduledForAirline.airline_id = airline.airline_id AND
+                       flight.flight_id = flightScheduledForAirline.flight_id
+                   ) AND flight_id NOT IN (
+                       SELECT ticket.flight_id from ticket
+                       WHERE ticket.uname = '{}'
+                    )""".format(_src, _dst, session['uname'])
             )
             flights = cursor.fetchall()
-            return render_template('app.html', flights = flights)
+           
+
+            return render_template('app.html', flights = flights, airports = airports)
         else:
-            fno = request.form['submit_button']
+            fno = request.form['submit_button'] 
             return redirect(url_for('payment', flight = fno))
 
 @app.route("/profile", methods=['GET', 'POST'])
@@ -115,9 +134,32 @@ def profile():
     if request.method == 'GET':
         cursor.execute("SELECT * FROM users WHERE uname = '{}'".format(session['uname']))
         res = cursor.fetchall()
-        return render_template('users_view.html', result=res, content_type='application/json')
+        cursor.execute(
+            """SELECT * FROM ticket 
+               JOIN flight ON ticket.flight_id = flight.flight_id
+                WHERE uname = '{}'""".format(session['uname'])
+        )
+        tkts = cursor.fetchall()
+        return render_template('users_view.html', result=res, tickets = tkts)
     else:
-        return redirect(url_for('update'))
+        if request.form['submit_button'] == 'update':
+            return redirect(url_for('update'))
+        else:
+            tno = request.form['submit_button']
+            cursor.execute("SELECT * FROM users WHERE uname = '{}'".format(session['uname']))
+            res = cursor.fetchall()
+            cursor.execute(
+                """DELETE FROM ticket
+                   WHERE ticket_id = '{}'""".format(tno)
+            )
+            conn.commit()
+            cursor.execute(
+            """SELECT * FROM ticket 
+               JOIN flight ON ticket.flight_id = flight.flight_id
+                WHERE uname = '{}'""".format(session['uname'])
+            )
+            tkts = cursor.fetchall()
+            return render_template('users_view.html', result = res, tickets = tkts)
 
 @app.route("/update", methods=['GET', 'POST'])
 def update():
@@ -132,11 +174,6 @@ def update():
         # _uname = request.form['input_uname'] if not None
         _passwd = request.form['input_password']
         
-        # cursor.execute(
-        #     "SELECT * FROM users WHERE users.uname = '{}' or users.pno = '{}' or users.phone_no = '{}'".format(_uname, _pno, _phone)
-        # )
-        # if cursor.fetchone() is not None:
-        #     error = 'User is already registered'
         
         # if error is None:
         if request.form.get('input_pno', None):
@@ -202,10 +239,14 @@ def payment():
     elif request.args['flight']:
         flight_no = request.args['flight']
         username = session['uname']
-        ticket_id = 'ticket'+str(i)
-        i += 1
+        cursor.execute(
+            "SELECT COUNT(*) FROM ticket WHERE flight_id = '{}'".format(flight_no)
+        )
+        count = int(cursor.fetchone()[0])
+        ticket_id = str(flight_no) + str(count + 2)
         price = 100
-        status = 'yes'
+        status = 'Booked'
+
 
         cursor.execute(
             "INSERT INTO ticket VALUES ('{}', '{}', '{}', '{}', '{}')".format(
@@ -253,7 +294,8 @@ def payment():
 @app.route("/print", methods=['GET', 'POST'])
 def print():
     if request.method == 'GET':
-        return render_template('print.html')
+        payment = request.args['payment']
+        return render_template('print.html', payment = payment)
 
 # @app.before_request()
 # def load_logged_in_user():

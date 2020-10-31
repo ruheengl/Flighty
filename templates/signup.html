@@ -8,31 +8,31 @@
       <div class="form-group">
             
             <label for="exampleInputPassport" class="mt-4">Passport Number</label>
-            <input type="text" name="input_pno" class="form-control" id="exampleInputPassport" placeholder="Passport Number" required>
+            <input type="text" name="input_pno" class="form-control" id="exampleInputPassport" placeholder="Passport Number" maxlength="20" required>
             
             <label for="exampleInputFname" class="mt-4">First Name</label>
-            <input type="text" name="input_fname" class="form-control" id="exampleInputFName" placeholder="First Name" required>
+            <input type="text" name="input_fname" class="form-control" id="exampleInputFName" placeholder="First Name" maxlength="20" required>
 
             <label for="exampleInputLname" class="mt-4">Last Name</label>
-            <input type="text" name="input_lname" class="form-control" id="exampleInputLName" placeholder="Last Name" required>
+            <input type="text" name="input_lname" class="form-control" id="exampleInputLName" placeholder="Last Name" maxlength="20" required>
 
             <label for="exampleInputDOB" class="mt-4">Date of Birth</label>
             <input type="date" name="input_dob" class="form-control" id="exampleInputDOB" placeholder="Date of Birth" required>
             
             <label for="exampleInputAddress" class="mt-4">Current Address</label>
-            <input type="text" name="input_address" class="form-control" id="exampleInputAddress" placeholder="Address">
+            <input type="text" name="input_address" class="form-control" id="exampleInputAddress" placeholder="Address" maxlength="50">
 
             <label for="exampleInputPhone" class="mt-4">Phone Number</label>
             <input type="text" name="input_phone" class="form-control" id="exampleInputPhone" placeholder="Phone Number" maxlength="10" required>
 
             <label for="exampleInputUsername1">Username</label>
-            <input type="text" name="input_uname" class="form-control" id="exampleInputUsername1" aria-describedby="usernameHelp" placeholder="Enter username" required>
+            <input type="text" name="input_uname" class="form-control" id="exampleInputUsername1" aria-describedby="usernameHelp" placeholder="Enter username" maxlength="20" required>
 
             <label for="exampleInputPassword1" class="mt-4">Password</label>
             <input type="password" name="input_password" class="form-control" id="exampleInputPassword1" placeholder="Password" required>
 
             <label for="exampleInputPassword2" class="mt-4">Confirm Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword2" placeholder="Re-Enter Password" required>
+            <input type="password" name="conf_password" class="form-control" id="exampleInputPassword2" placeholder="Re-Enter Password" required>
         </div>
         <button type="submit" class="btn btn-primary btn-block">Submit</button>
     </form>

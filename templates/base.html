@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <title>Flighty: {% block title %}{% endblock%}</title>
+    <title>Flighty: {% block title %}{% endblock %}</title>
 </head>
 <body>
     <div class="page-header">
@@ -18,10 +18,10 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="/profile" id="profileButton">Profile</a>
+            <li class="nav-item {% block profile_active %}{% endblock %}">
+              <a class="nav-link" href="{{ url_for('profile') }}" id="profileButton">Profile</a>
             </li>
-            <li class="nav-item active" >
+            <li class="nav-item" >
               <a class="nav-link" href="{{ url_for('bookticket') }}" id="bookButton">Book Ticket</a>
             </li>
           </ul>
