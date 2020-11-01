@@ -17,6 +17,11 @@ conn = mysql.connect()
 if conn:
     cursor = conn.cursor()
 
+@app.route("/", methods=['GET', 'POST'])
+def home():
+    if request.method == 'GET':
+        return render_template('home.html')
+
 @app.before_request
 def load_logged_in_user():
     uname = session.get('uname')
@@ -57,7 +62,7 @@ def login():
         if user is None:
             error = "Incorrect Username!"
         elif not check_password_hash(user[1], password):
-            error = "Incorrect Password"
+            error = "Incorrect Password!"
 
         if error is None:
             session.clear()
@@ -323,7 +328,7 @@ def payment():
 @login_required
 def print():
     if request.method == 'GET':
-        payment = request.args['payment']
+        # payment = request.args['payment']
         return render_template('print.html', payment = payment)
 
 

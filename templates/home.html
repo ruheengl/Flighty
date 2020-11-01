@@ -4,11 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <title>Flighty: {% block title %}{% endblock %}</title>
+    <title>Flighty: Home</title>
     <style>
-      input[type="password"]
-      {
-          font-family: "Times New Roman";
+      body, html {
+        height: 100%;
+        margin: 0;
+      }
+      
+      
+      .bg {
+        /* The image used */
+        background-image: url("static/rsz_3427922.jpg");
+        opacity: 0.7;
+        /* Full height */
+        height: 84%; 
+      
+        /* Center and scale the image nicely */
+        background-position: bottom;
+        background-repeat: no-repeat;
+        background-size: cover;
+        /* overflow: hidden; */
       }
       @font-face {
         font-family: myFirstFont;
@@ -26,7 +41,6 @@
         <center><h4>Flying made easy</h4></center>
     </div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="{{ url_for('home') }}">Home</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -41,14 +55,8 @@
           </ul>
         </div>
     </nav>
-    {% for message in get_flashed_messages() %}
-      {% if message == 'User successfully created!' %}
-        <div class="flash alert alert-success justify-content-center mt-4 w-50 mx-auto">{{ message }}</div>
-      {% else %}
-        <div class="flash alert alert-danger justify-content-center mt-4 w-50 mx-auto">{{ message }}</div>
-      {% endif %}
-	  {% endfor %}
-	{% block content %}{% endblock %}
+    
+    <div class="bg"></div>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
