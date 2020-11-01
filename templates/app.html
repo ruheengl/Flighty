@@ -29,6 +29,9 @@
           </ul>
         </div>
     </nav>
+    {% if error %}
+      <div class="flash alert alert-danger justify-content-center mt-4 w-50 mx-auto">{{ error }}</div>
+    {% endif %}
     <div class="d-flex justify-content-center pt-5 pb-5">
       <form method="post">
         <!-- <div class="form-row">
@@ -37,6 +40,7 @@
             <input type="email" class="form-control" id="inputEmail4" placeholder="Email">
           </div>
         </div> -->
+        
         <div class="form-group">
             <label for="inputsrc">Flight From:</label>
             <select id="inputsrc" class="form-control" name="inputsrc">
@@ -92,6 +96,7 @@
           {% endfor %}
         {% endif %}
         <!-- </form> -->
+
       
       <br>
       <small id="bookDisc" class="text-muted">Your passport number will be verified before proceeding to payment.</small>

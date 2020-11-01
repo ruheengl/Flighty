@@ -1,7 +1,8 @@
 from flask import Flask
 from flaskext.mysql import MySQL
-from flask import Flask, request, render_template, jsonify, redirect, url_for, session, flash
+from flask import Flask, request, render_template, jsonify, redirect, url_for, session, flash, g
 from werkzeug.security import check_password_hash, generate_password_hash
+import functools
 
 
 mysql = MySQL()
@@ -15,6 +16,25 @@ mysql.init_app(app)
 conn = mysql.connect()
 if conn:
     cursor = conn.cursor()
+
+@app.before_request
+def load_logged_in_user():
+    uname = session.get('uname')
+
+    if uname is None:
+        g.uname = None
+    else:
+        g.uname = uname
+
+def login_required(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if g.uname is None:
+            return redirect(url_for('login'))
+
+        return view(**kwargs)
+
+    return wrapped_view
 
 
 @app.route("/login",  methods=['GET', 'POST'])
@@ -98,6 +118,7 @@ def logout():
     return redirect(url_for('login'))
 
 @app.route("/bookticket", methods=['GET', 'POST'])
+@login_required
 def bookticket():
     if request.method == 'GET':
         return render_template('app.html')
@@ -123,13 +144,18 @@ def bookticket():
             )
             flights = cursor.fetchall()
            
-
-            return render_template('app.html', flights = flights, airports = airports)
+            if flights:
+                return render_template('app.html', flights = flights, airports = airports)
+            else:
+                error = 'No flights available'
+                flash(error)
+                return render_template('app.html', src_dest = (_src, _dst), error = error)
         else:
             fno = request.form['submit_button'] 
             return redirect(url_for('payment', flight = fno))
 
 @app.route("/profile", methods=['GET', 'POST'])
+@login_required
 def profile():
     if request.method == 'GET':
         cursor.execute("SELECT * FROM users WHERE uname = '{}'".format(session['uname']))
@@ -162,6 +188,7 @@ def profile():
             return render_template('users_view.html', result = res, tickets = tkts)
 
 @app.route("/update", methods=['GET', 'POST'])
+@login_required
 def update():
     # error = None
     if request.method == 'POST':
@@ -233,6 +260,7 @@ def update():
     return render_template('update.html')
 
 @app.route("/payment", methods=['GET', 'POST'])
+@login_required
 def payment():
     if request.method == 'GET' and not request.args.get('flight'):
         return redirect(url_for('bookticket'))
@@ -292,19 +320,11 @@ def payment():
         
 
 @app.route("/print", methods=['GET', 'POST'])
+@login_required
 def print():
     if request.method == 'GET':
         payment = request.args['payment']
         return render_template('print.html', payment = payment)
-
-# @app.before_request()
-# def load_logged_in_user():
-#     pno = session['pno']
-
-#     if pno is None:
-#         return redirect(url_for('login'))
-#     else:
-#         return redirect(url_for('bookticket'))
 
 
 if __name__ == "__main__":
