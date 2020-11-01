@@ -1,7 +1,7 @@
-create table if not exists users
+create table users
 (
     uname varchar(20) not null,
-    passwd varchar(15) not null,
+    passwd varchar(100) not null,
     pno varchar(20) not null,
     first_name varchar(20) not null,
     last_name varchar(20) not null,
@@ -22,7 +22,7 @@ create table userMakesPayment
 	on delete cascade
 );
 
-create table if not exists ticket
+create table ticket
 (
     ticket_id varchar(10) not null,
     uname varchar(20),
@@ -93,3 +93,4 @@ create table airport
     city varchar(15) not null,
     primary key(location_code)
 );
+
