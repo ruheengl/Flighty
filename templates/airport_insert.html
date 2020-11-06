@@ -1,0 +1,30 @@
+{% extends 'admin_base.html' %}
+{% block signup_active %}active{% endblock %} 
+
+{% block content %}
+<div class="jumbotron justify-content-center mx-auto mt-5 signup" style="width: 400px;">
+  <form action="" method="post">
+      <div class="form-group">
+            <label for="exampleInputLocCode" class="mt-4">Location Code</label>
+            <input type="text" name="input_loccode" class="form-control" id="exampleInputLocCode" placeholder="Location Code" required>
+            
+            <label for="exampleInputCity" class="mt-4">City</label>
+            <input type="text" name="input_city" class="form-control" id="exampleInputCity" placeholder="City" required>
+
+            <label for="exampleInputAirline1" class="mt-4">Airline ID 1</label>
+            <input type="text" name="input_airline1" class="form-control" id="exampleInputAirline1" placeholder="Airline ID">
+
+            <label for="exampleInputAirline2" class="mt-4">Airline ID 2</label>
+            <input type="text" name="input_airline2" class="form-control" id="exampleInputAirline2" placeholder="Airline ID">
+
+            <label for="exampleInputAirline3" class="mt-4">Airline ID 3</label>
+            <input type="text" name="input_airline3" class="form-control" id="exampleInputAirline3" placeholder="Airline ID">
+
+            <label for="exampleInputAirline4" class="mt-4">Airline ID 4</label>
+            <input type="text" name="input_airline4" class="form-control" id="exampleInputAirline4" placeholder="Airline ID">
+            
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Insert</button>
+    </form>
+</div>
+{% endblock %}

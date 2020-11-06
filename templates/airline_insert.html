@@ -1,0 +1,18 @@
+{% extends 'admin_base.html' %}
+{% block signup_active %}active{% endblock %} 
+
+{% block content %}
+<div class="jumbotron justify-content-center mx-auto mt-5 signup" style="width: 400px;">
+  <form action="" method="post">
+      <div class="form-group">
+            <label for="exampleInputAirlineId" class="mt-4">Airline ID</label>
+            <input type="text" name="input_airlineid" class="form-control" id="exampleInputAirlineId" placeholder="Airline ID">
+            
+            <label for="exampleInputAirlineName" class="mt-4">Airline Name</label>
+            <input type="text" name="input_airlinename" class="form-control" id="exampleInputAirlineName" placeholder="Airline Name">
+            
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Insert</button>
+    </form>
+</div>
+{% endblock %}

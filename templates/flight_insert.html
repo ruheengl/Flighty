@@ -1,0 +1,39 @@
+{% extends 'admin_base.html' %}
+{% block signup_active %}active{% endblock %} 
+
+{% block content %}
+<div class="jumbotron justify-content-center mx-auto mt-5 signup" style="width: 400px;">
+  <form action="" method="post">
+      <div class="form-group">
+            <label for="exampleInputFlightID" class="mt-4">Flight ID</label>
+            <input type="text" name="input_flightid" class="form-control" id="exampleInputFlightID" placeholder="Flight ID" required>
+
+            <label for="exampleInputAirlineID1" class="mt-4">Airline ID</label>
+            <input type="text" name="input_airlineid1" class="form-control" id="exampleInputAirlineID1" placeholder="Airline ID" required>
+            
+            <label for="exampleInputArrival" class="mt-4">Arrival</label>
+            <input type="text" name="input_arrival" class="form-control" id="exampleInputArrival" placeholder="HH:MM:SS" required>
+
+            <label for="exampleInputDeparture" class="mt-4">Departure</label>
+            <input type="text" name="input_departure" class="form-control" id="exampleInputDeparture" placeholder="HH:MM:SS" required>
+
+            <label for="exampleInputSource" class="mt-4">Source</label>
+            <input type="text" name="input_source" class="form-control" id="exampleInputSource" placeholder="Source" required>
+
+            <label for="exampleInputDestination" class="mt-4">Destination</label>
+            <input type="text" name="input_destination" class="form-control" id="exampleInputDestination" placeholder="Destination" required>
+
+            <label for="exampleInputRoute" class="mt-4">Route</label>
+            <input type="text" name="input_route" class="form-control" id="exampleInputRoute" placeholder="Connecting/Nonstop/Direct" required>
+
+            <label for="exampleInputModel" class="mt-4">Model</label>
+            <input type="text" name="input_model" class="form-control" id="exampleInputModel" placeholder="Model" required>
+
+            <label for="exampleInputManufacturer" class="mt-4">Manufacturer</label>
+            <input type="text" name="input_manufacturer" class="form-control" id="exampleInputManufacturer" placeholder="Manufacturer" required>
+            
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Insert</button>
+    </form>
+</div>
+{% endblock %}

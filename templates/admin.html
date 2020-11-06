@@ -1,0 +1,50 @@
+{% extends 'admin_base.html' %}
+{% block profile_active %}active{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <br><br><br>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card" style="width: 18rem;">
+
+              <div class="card-body">
+                <h5 class="card-title">Airport</h5>
+                <a href="/airport_view" class="btn btn-primary">View</a>
+                <a href="/airport_insert" class="btn btn-primary">Add</a>
+              </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card" style="width: 18rem;">
+
+              <div class="card-body">
+                <h5 class="card-title">Airline</h5>
+                <a href="/airline_view" class="btn btn-primary">View</a>
+                <a href="/airline_insert" class="btn btn-primary">Add</a>
+              </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card" style="width: 18rem;">
+
+              <div class="card-body">
+                <h5 class="card-title">Flight</h5>
+                <a href="/flight_view" class="btn btn-primary">View</a>
+                <a href="/flight_insert" class="btn btn-primary">Add</a>
+              </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card" style="width: 18rem;">
+
+            <div class="card-body">
+              <h5 class="card-title">Users</h5>
+              <a href="/all_users_view" class="btn btn-primary">View</a>
+            </div>
+          </div>
+      </div>
+    </div>
+</div>
+{% endblock %}
