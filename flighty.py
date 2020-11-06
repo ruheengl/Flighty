@@ -17,6 +17,12 @@ conn = mysql.connect()
 if conn:
     cursor = conn.cursor()
 
+def view(table_name):
+    cursor.execute("select * from {}".format(table_name))
+    result = cursor.fetchall()
+    return result
+
+
 @app.route("/", methods=['GET', 'POST'])
 def home():
     if request.method == 'GET':
@@ -51,6 +57,9 @@ def login():
         # if (request.form['input_uname'] != 'admin') or (request.form['input_passwd'] != 'admin'):
         #     error = 'Invalid Credentials. Please try again.'
         #     return render_template('login.html', error = error)
+        if request.form['input_uname'] == 'admin' and request.form['input_passwd'] == 'admin':
+            return redirect(url_for('admin'))
+
         username = str(request.form['input_uname'])
         password = str(request.form['input_passwd'])
 
@@ -73,6 +82,92 @@ def login():
         flash(error)
 
     return render_template('login.html', error=error)
+
+@app.route("/admin",  methods=['GET', 'POST'])
+def admin():
+    if request.method == 'GET':
+        return render_template('admin.html')
+
+@app.route("/airport_view")
+def airport_view():
+    res = view('airport')
+    return render_template('airport_view.html', result=res, content_type='application/json')
+
+@app.route("/airline_view")
+def airline_view():
+    res = view('airline')
+    return render_template('airline_view.html', result=res, content_type='application/json')
+
+@app.route("/flight_view")
+def flight_view():
+    res = view('flight')
+    return render_template('flight_view.html', result=res, content_type='application/json')
+
+@app.route("/all_users_view")
+def all_users_view():
+    res = view('users')
+    return render_template('all_users_view.html', result=res, content_type='application/json')
+
+@app.route("/airport_insert", methods=['GET', 'POST'])
+def airport_insert():
+    if request.method == 'GET':
+        return render_template('airport_insert.html')
+    else:
+        _loccode = request.form['input_loccode']
+        _city = request.form['input_city']
+        _airline1 = request.form['input_airline1']
+        _airline2 = request.form['input_airline2']
+        _airline3 = request.form['input_airline3']
+        _airline4 = request.form['input_airline4']
+        cursor.execute("insert into airport values ('{}', '{}')".format(_loccode, _city))
+        if request.form.get('input_airline1', None):
+            cursor.execute("INSERT INTO airportContainsAirline (airline_id, location_code) values ('{}', '{}')".format(_airline1, _loccode))
+
+        if request.form.get('input_airline2', None):
+            cursor.execute("INSERT INTO airportContainsAirline (airline_id, location_code) values ('{}', '{}')".format(_airline2, _loccode))
+        
+        if request.form.get('input_airline3', None):
+            cursor.execute("INSERT INTO airportContainsAirline (airline_id, location_code) values ('{}', '{}')".format(_airline3, _loccode))
+        
+        if request.form.get('input_airline4', None):
+            cursor.execute("INSERT INTO airportContainsAirline (airline_id, location_code) values ('{}', '{}')".format(_airline4, _loccode))
+        
+        res = cursor.fetchall()
+        conn.commit()
+        return render_template('admin.html')
+
+@app.route("/airline_insert", methods=['GET', 'POST'])
+def airline_insert():
+    if request.method == 'GET':
+        return render_template('airline_insert.html')
+    else:
+        _airlineid = request.form['input_airlineid']
+        _airlinename = request.form['input_airlinename']
+        cursor.execute("insert into airline values ('{}', '{}')".format(_airlineid, _airlinename))
+        res = cursor.fetchall()
+        conn.commit()
+        return render_template('admin.html')
+
+@app.route("/flight_insert", methods=['GET', 'POST'])
+def flight_insert():
+    if request.method == 'GET':
+        return render_template('flight_insert.html')
+    else:
+        _flightid = request.form['input_flightid']
+        _airlineid1 = request.form['input_airlineid1']
+        _arrival = request.form['input_arrival']
+        _departure = request.form['input_departure']
+        _source = request.form['input_source']
+        _destination = request.form['input_destination']
+        _route = request.form['input_route']
+        _model = request.form['input_model']
+        _count_ticket = 0
+        _manufacturer = request.form['input_manufacturer']
+        cursor.execute("insert into flight values ('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')".format(_flightid, _arrival, _departure, _source, _destination, _route, _model, _manufacturer, _count_ticket))
+        cursor.execute("insert into flightScheduledForAirline values ('{}', '{}')".format(_airlineid1, _flightid))
+        res = cursor.fetchall()
+        conn.commit()
+        return render_template('admin.html')
 
 @app.route("/signup", methods=['GET', 'POST'])
 def signup():
