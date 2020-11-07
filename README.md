@@ -2,6 +2,8 @@
 
 #### DBMS Course Mini-Project
 
+Repository link: https://github.com/ruheengl/Flighty
+
 `Flighty` is a Flask-based web-app which allows users to create profiles, book and cancel tickets and print transaction info. The app also offers `admin` support so that the admin may add/ remove new flights, airports, airlines etc. as per requirement. The application stores the `session` data and the user may continue the session later. Accessing application endpoints like payment, bookticket(main app), profile require `authorization` and the user needs to login to gain access to these endpoints. As this is a mini-development project, ticket date feature has not been implemented as it requires continuous/ regular insertion of data. The MySQL queries include usage of clauses like `SELECT, INSERT, DELETE, JOIN` (for views) and the data is stored locally on the development machine. The ddl file describes the structure of the data and the insert file describes the data to be added.
 
 ------
